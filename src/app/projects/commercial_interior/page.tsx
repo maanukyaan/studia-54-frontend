@@ -16,7 +16,7 @@ export default function CommercialInterior() {
     const fetchProjectItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:1337/api/content-posts-plural?filters[type][$eq]=commercial_interior&populate=*"
+          "https://safe-animal-640fd60742.strapiapp.com/api/content-posts-plural?filters[type][$eq]=commercial_interior&populate=*"
         );
         setProjectItems(response.data.data);
       } catch (err) {

@@ -16,9 +16,9 @@ export default function ResidentalInteriors() {
     const fetchProjectItems = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:1337/api/content-posts-plural?filters[type][$eq]=residential_interiors&populate=*"
+          "https://safe-animal-640fd60742.strapiapp.com/api/content-posts-plural?filters[type][$eq]=residential_interiors&populate=*"
         );
-        setProjectItems(response.data.data); // Записываем данные в состояние
+        setProjectItems(response.data.data);
       } catch (err) {
         setError("Ошибка при загрузке данных");
         console.error(err);
@@ -30,13 +30,9 @@ export default function ResidentalInteriors() {
     fetchProjectItems();
   }, []);
 
-  // Если данные загружаются, показываем индикатор загрузки
   if (loading) {
     return <Loader />;
-  }
-
-  // Если произошла ошибка
-  if (error) {
+  } else if (error) {
     return <div>{error}</div>;
   }
 

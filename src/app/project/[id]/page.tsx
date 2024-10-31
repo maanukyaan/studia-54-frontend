@@ -4,7 +4,6 @@ import Loader from "@/components/@ui/loaders/Loader";
 import ProjectItem from "@/components/ProjectItem";
 import { IContentPost } from "@/types/IContentPosts";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
 import { use, useEffect, useState } from "react";
 
@@ -22,12 +21,12 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchPost = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:1337/api/content-posts-plural?filters[documentId][$eq]=${id}&populate=*`
+          `https://safe-animal-640fd60742.strapiapp.com/api/content-posts-plural?filters[documentId][$eq]=${id}&populate=*`
         );
 
         if (response.data.data && response.data.data.length > 0) {
           setPost(response.data.data[0]);
-          const documentId = response.data.data[0].content?.documentId; // Проверяем наличие documentId
+          const documentId = response.data.data[0].content?.documentId;
           if (documentId) {
             await fetchContent(documentId);
           }
@@ -45,10 +44,10 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
     const fetchContent = async (documentId: string) => {
       try {
         const contentResponse = await axios.get(
-          `http://localhost:1337/api/contents?filters[documentId][$eq]=${documentId}&populate=*`
+          `https://safe-animal-640fd60742.strapiapp.com/api/contents?filters[documentId][$eq]=${documentId}&populate=*`
         );
         if (contentResponse.data.data && contentResponse.data.data.length > 0) {
-          setContentImages(contentResponse.data.data[0].Media); // Сохраняем медиа
+          setContentImages(contentResponse.data.data[0].Media);
         }
       } catch (err) {
         return;
@@ -63,7 +62,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       if (post) {
         try {
           const response = await axios.get(
-            `http://localhost:1337/api/content-posts-plural?filters[type][$eq]=${post.type}&filters[documentId][$ne]=${post.documentId}&pagination[limit]=3&populate=*`
+            `https://safe-animal-640fd60742.strapiapp.com/api/content-posts-plural?filters[type][$eq]=${post.type}&filters[documentId][$ne]=${post.documentId}&pagination[limit]=3&populate=*`
           );
           setRecommendedProjects(response.data.data);
         } catch (err) {
@@ -90,7 +89,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
       <div
         className="min-h-[738px] bg-cover flex items-center justify-center p-[60px] gap-x-[40px]"
         style={{
-          backgroundImage: `linear-gradient(rgb(0 0 0 / .65), rgb(0 0 0 / .65)), url(http://localhost:1337${post.post_image.formats.medium.url})`,
+          backgroundImage: `linear-gradient(rgb(0 0 0 / .65), rgb(0 0 0 / .65)), url(${post.post_image.formats.medium.url})`,
         }}
       >
         <h1 className="font-bold text-[48px] leading-[76.8px]">{post.title}</h1>
@@ -129,7 +128,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
               {contentImages.map((image) => (
                 <img
                   key={image.id}
-                  src={`http://localhost:1337${image.url}`}
+                  src={`${image.url}`}
                   alt={image.name}
                   className="media-image"
                 />
@@ -158,7 +157,7 @@ export default function Page({ params }: { params: Promise<{ id: string }> }) {
         // Если привязанного контента нет, показываем стандартный контент
         <div className="content py-[130px] px-[60px] w-full h-full flex items-center justify-between gap-x-[112px]">
           <img
-            src={`http://localhost:1337${post.post_image.formats.large.url}`}
+            src={`${post.post_image.formats.large.url}`}
             alt="Content image"
           />
           <div className="flex flex-col justify-between gap-y-[26px] h-full">
